@@ -1,9 +1,10 @@
 // configure environment - DO NOT MODIFY
 require('dotenv').config();
 
-// Import package
+// Import package'
 
 // Your code here
+const jwt = require('jsonwebtoken')
 
 // Define variables - DO NOT MODIFY
 
@@ -11,6 +12,7 @@ require('dotenv').config();
 let token; // DO NOT MODIFY! Re-assign the token variable below.
 
 // Your code here
+ token = jwt.sign({email: "johnny@gmail.com"}, process.env.SECRET_KEY, { expiresIn: '1h'})
 
 // See the JWT in the console - DO NOT MODIFY
 console.log('JWT:', token);
@@ -21,6 +23,8 @@ let payload; // DO NOT MODIFY! Re-assign the payload variable below.
 
 // Your code here
 
+payload = jwt.decode(token)
+
 // See the decoded payload in the console - DO NOT MODIFY
 console.log('Payload:', payload);
 
@@ -29,6 +33,7 @@ console.log('Payload:', payload);
 let verifiedPayload; // DO NOT MODIFY! Re-assign the verifiedPayload variable below.
 
 // Your code here
+verifiedPayload = jwt.verify(token, process.env.SECRET_KEY)
 
 // See the verified payload in the console - DO NOT MODIFY
 console.log('Verified Payload:', verifiedPayload);
@@ -40,6 +45,17 @@ console.log('Verified Payload:', verifiedPayload);
 
 // Your code here
 
+token = jwt.sign({email: "prueba1@gmail.com"}, "appacademy")
+
+
+try {
+    const verified = jwt.verify(token, "app")
+
+    console.log(verified)
+} catch (error) {
+    console.log(error)
+}
+
 // (Optional) Bonus: Catch Error With Expired Token
 // First, set the token's expiration (above) to 1 second
 // Second, add a setTimeout longer than 1 second
@@ -47,3 +63,15 @@ console.log('Verified Payload:', verifiedPayload);
 //    Then "catch" the error and log it to the console
 
 // Your code here
+
+token = jwt.sign({email: "prueba2@gmail.com"}, "appacademy", {
+    expiresIn: '2s'
+})
+
+setTimeout(() => {
+    try {
+        const verify = jwt.verify(token, "appacademy")
+    } catch (error) {
+        console.log(error)
+    }
+}, 3000)
